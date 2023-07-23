@@ -1,0 +1,2 @@
+class CharacterInMilestone:
+    pass

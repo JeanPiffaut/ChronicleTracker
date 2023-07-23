@@ -1,0 +1,2 @@
+class Milestone:
+    pass
