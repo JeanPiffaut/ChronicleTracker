@@ -1,1 +1,59 @@
-.idea/*
+# Python virtual environments and dependencies
+venv/
+env/
+*.pyc
+*.pyo
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Flask specific dependencies
+instance/
+webapp.cfg
+
+# Development generated files
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite
+*.log
+*.cache
+*.json
+
+# Node.js dependencies (if using frontend with Node.js)
+node_modules/
+
+# Visual Studio Code development environment (if using VS Code)
+.vscode/
+
+# PyCharm development environment (if using PyCharm)
+.idea/
+
+# Specific test files and directories
+htmlcov/
+.coverage
+.venv/
+.pytest_cache/
+
+# Docker specific files and directories (if using Docker)
+docker-compose.yml
+Dockerfile
+docker/
+
+# Other Flask specific files
+*.env
+.env
+*.env.*
+
+# Other sensitive files with personal information or credentials
+secrets.ini
+secrets.yaml
+secrets.yml
+secrets.json
+secrets.xml
+secrets.properties
