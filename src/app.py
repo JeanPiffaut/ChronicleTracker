@@ -12,4 +12,4 @@ if __name__ == '__main__':
     Api(app, catch_all_404s=True)
 
     app.register_blueprint(character_bp)
-    app.run()
+    app.run(debug=True)

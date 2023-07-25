@@ -1,3 +1,4 @@
+from character.domain.db_model import CharacterORM
 from common.domain.module_model import ModuleModel
 
 
@@ -15,6 +16,7 @@ class Character(ModuleModel):
     def __init__(self, character_id: int = None, name: str = None, description: str = None, year_of_birth: str = None,
                  month_of_birth: str = None, day_of_birth: str = None, status: str = None, gender: str = None,
                  life_status: int = None):
+        super().__init__()
         self.id = character_id
         self.name = name
         self.description = description
@@ -25,23 +27,34 @@ class Character(ModuleModel):
         self.gender = gender
         self.life_status = life_status
 
-    def validate(self):
-        has_error = not super(self).validate()
+    def validate_list(self):
+        has_error = super()._validate_length()
+        return has_error
 
-        if self.id is None:
-            self.add_error(f'The \'id\' field cannot be None', ValueError)
-            has_error = True
+    def set_by_module_orm(self, obj: CharacterORM):
+        if obj.id is not None:
+            self.id = obj.id
 
-        if self.name is None:
-            self.add_error(f'The \'name\' field cannot be None', ValueError)
-            has_error = True
+        if obj.name is not None:
+            self.name = obj.name
 
-        if self.status is None:
-            self.add_error(f'The \'status\' field cannot be None', ValueError)
-            has_error = True
+        if obj.description is not None:
+            self.description = obj.description
 
-        if self.life_status is None:
-            self.add_error(f'The \'life_status\' field cannot be None', ValueError)
-            has_error = True
+        if obj.year_of_birth is not None:
+            self.year_of_birth = obj.year_of_birth
 
-        return not has_error
+        if obj.month_of_birth is not None:
+            self.month_of_birth = obj.month_of_birth
+
+        if obj.day_of_birth is not None:
+            self.day_of_birth = obj.day_of_birth
+
+        if obj.status is not None:
+            self.status = obj.status
+
+        if obj.gender is not None:
+            self.gender = obj.gender
+
+        if obj.life_status is not None:
+            self.life_status = obj.life_status
