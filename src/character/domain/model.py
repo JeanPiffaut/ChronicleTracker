@@ -27,10 +27,6 @@ class Character(ModuleModel):
         self.gender = gender
         self.life_status = life_status
 
-    def validate_list(self):
-        has_error = super()._validate_length()
-        return has_error
-
     def set_by_module_orm(self, obj: CharacterORM):
         if obj.id is not None:
             self.id = obj.id

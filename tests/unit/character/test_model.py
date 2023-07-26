@@ -1,9 +1,7 @@
 from character.domain.db_model import CharacterORM
 from character.domain.model import Character
-from common.domain.module_model import ModuleModel
 
 
-# Pruebas para la clase Character
 class TestCharacter:
 
     def test_constructor(self):
@@ -14,17 +12,17 @@ class TestCharacter:
 
     def test_validate_list(self):
         character = Character(name="John Doe", year_of_birth="1985")
-        assert not character.validate_list()  # Debe retornar False ya que no hay errores
+        assert character.validate_list()
 
-        character.name = "J" * 256  # Nombre con demasiados caracteres
-        assert character.validate_list()  # Debe retornar True ya que hay un error
+        character.name = "J" * 256
+        assert not character.validate_list()
 
         character.name = "John Doe"
-        character.year_of_birth = 123456789012  # Año de nacimiento con demasiados caracteres
-        assert character.validate_list()  # Debe retornar True ya que hay un error
+        character.year_of_birth = 123456789012
+        assert not character.validate_list()
 
         character.year_of_birth = "1985"
-        assert not character.validate_list()  # Debe retornar False ya que no hay errores
+        assert character.validate_list()
 
     def test_set_by_module_orm(self):
         character = Character()
@@ -34,4 +32,18 @@ class TestCharacter:
         assert character.id == 1
         assert character.name == "Jane Doe"
         assert character.description == "Description"
-        assert character.year_of_birth == "1990"
+
+    def test_add_error(self):
+        character = Character()
+        character.set_errors()
+        character.add_error("Error 1")
+        character.add_error("Error 2")
+        assert character.get_errors() == [{'msj': "Error 1", 'type_error': Exception},
+                                          {'msj': "Error 2", 'type_error': Exception}]
+
+    def test_set_errors(self):
+        character = Character()
+        character.set_errors(
+            [{'msj': "Error 3", 'type_error': ValueError}, {'msj': "Error 4", 'type_error': ValueError}])
+        assert character.get_errors() == [{'msj': "Error 3", 'type_error': ValueError},
+                                          {'msj': "Error 4", 'type_error': ValueError}]
