@@ -1,7 +1,8 @@
-from flask import request
+from flask import request, jsonify
 from flask_restful import Resource
 
 from character.application import List, Create
+from common.misc import response_structure
 
 
 class ApiResource(Resource):
@@ -11,10 +12,10 @@ class ApiResource(Resource):
 
         response = character_list.execute()
         if response is not False:
-            return response, 200
+            return response_structure(200, response)
         else:
             errors = character_list.get_errors()
-            return str(errors), 400
+            return response_structure(400, errors)
 
     def post(self):
         args = request.get_json()
@@ -30,9 +31,11 @@ class ApiResource(Resource):
 
         result = character_creation.execute()
         if result:
-            return '', 201
+            return response_structure(201)
         else:
-            return '', 401
+            return response_structure(400, character_creation.get_errors(), "Failed to create a new character. Please "
+                                                                            "review the error messages provided in the"
+                                                                            " response and validate the data sent.")
 
     def put(self):
         pass

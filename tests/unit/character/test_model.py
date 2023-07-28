@@ -5,13 +5,12 @@ from character.domain.model import Character
 class TestCharacter:
 
     def test_constructor(self):
-        character = Character(character_id=1, name="John Doe", year_of_birth="1985")
+        character = Character(character_id=1, name="John Doe")
         assert character.id == 1
         assert character.name == "John Doe"
-        assert character.year_of_birth == "1985"
 
     def test_validate_list(self):
-        character = Character(name="John Doe", year_of_birth="1985")
+        character = Character(name="John Doe")
         assert character._validate_length()
 
         character.name = "J" * 256
@@ -26,7 +25,7 @@ class TestCharacter:
 
     def test_set_by_module_orm(self):
         character = Character()
-        character_orm = CharacterORM(id=1, name="Jane Doe", description="Description", year_of_birth="1990")
+        character_orm = CharacterORM(id=1, name="Jane Doe", description="Description")
         character.set_by_module_orm(character_orm)
 
         assert character.id == 1

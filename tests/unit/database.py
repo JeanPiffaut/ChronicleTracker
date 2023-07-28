@@ -1,14 +1,8 @@
-import sqlalchemy as db
 import os
-
 from dotenv import load_dotenv
-from sqlalchemy.orm import sessionmaker
+from common.misc import get_database_session
 
 load_dotenv()
 
-engine = db.create_engine(
-    f'mysql+mysqldb://{os.environ.get("MYSQL_TEST_USER")}:{os.environ.get("MYSQL_TEST_PASSWORD")}@' +
-    f'{os.environ.get("MYSQL_TEST_HOST")}/{os.environ.get("MYSQL_TEST_DATABASE")}')
-
-Session = sessionmaker(engine)
-session = Session()
+session = get_database_session(os.environ.get("MYSQL_USER"), os.environ.get("MYSQL_PASSWORD"),
+                               os.environ.get("MYSQL_HOST"), os.environ.get("MYSQL_TEST_DATABASE"))

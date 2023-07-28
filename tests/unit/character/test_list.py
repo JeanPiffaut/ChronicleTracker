@@ -7,7 +7,7 @@ class TestList:
 
     def test_execute_valid(self):
         # Creamos un objeto de Character con datos válidos para la prueba
-        character = Character(character_id=1, name="John Doe", year_of_birth="1985")
+        character = Character(character_id=1, name="John Doe")
 
         # Creamos la conexion a la base de datos para el test
         session.connection()
@@ -22,7 +22,7 @@ class TestList:
 
     def test_execute_invalid(self):
         # Creamos un objeto de Character con datos inválidos para la prueba
-        character = Character(character_id=1, name="J" * 256, year_of_birth="1985")
+        character = Character(character_id=1, name="J" * 256)
 
         # Creamos un objeto List para la prueba
         list_obj = List(session)

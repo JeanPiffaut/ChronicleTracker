@@ -1,11 +1,6 @@
-import sqlalchemy as db
 import os
 
-from sqlalchemy.orm import sessionmaker
+from common.misc import get_database_session
 
-engine = db.create_engine(
-    f'mysql+mysqldb://{os.environ.get("MYSQL_USER")}:{os.environ.get("MYSQL_PASSWORD")}@' +
-    f'{os.environ.get("MYSQL_HOST")}/{os.environ.get("MYSQL_DATABASE")}')
-
-Session = sessionmaker(engine)
-session = Session()
+session = get_database_session(os.environ.get("MYSQL_USER"), os.environ.get("MYSQL_PASSWORD"),
+                               os.environ.get("MYSQL_HOST"), os.environ.get("MYSQL_DATABASE"))
