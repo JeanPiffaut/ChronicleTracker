@@ -9,7 +9,7 @@ class List(Action):
 
     def execute(self):
         fill_params = self.fill
-        if fill_params.validate_list() is False:
+        if fill_params.validate() is False:
             errors = fill_params.get_errors()
             self.set_errors(errors)
             return False

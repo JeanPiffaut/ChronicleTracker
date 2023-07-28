@@ -25,6 +25,6 @@ class ModuleModel:
 
         return not has_error
 
-    def validate_list(self):
+    def validate(self):
         has_error = self._validate_length()
         return has_error

@@ -1,2 +1,8 @@
+from character.domain import Character
+
+
 class Create:
-    pass
+    values = Character()
+
+    def execute(self):
+        self.values.validate()
