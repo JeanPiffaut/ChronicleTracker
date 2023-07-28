@@ -1,7 +1,6 @@
-from flask import jsonify
 from flask_restful import Resource
 
-from character.application.list import List
+from character.application import List
 
 
 class ApiResource(Resource):

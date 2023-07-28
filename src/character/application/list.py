@@ -1,7 +1,7 @@
 from sqlalchemy import select
-from character.domain.db_model import CharacterORM
-from character.domain.model import Character
-from common.domain.action_model import Action
+from character.domain import CharacterORM
+from character.domain import Character
+from common.domain import Action
 
 
 class List(Action):

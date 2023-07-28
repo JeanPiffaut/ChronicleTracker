@@ -12,5 +12,3 @@ engine = db.create_engine(
 
 Session = sessionmaker(engine)
 session = Session()
-
-session.connection()

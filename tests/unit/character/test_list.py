@@ -1,5 +1,5 @@
-from character.application.list import List
-from character.domain.model import Character
+from character.application import List
+from character.domain import Character
 from unit.database import session, engine
 
 
@@ -8,6 +8,9 @@ class TestList:
     def test_execute_valid(self):
         # Creamos un objeto de Character con datos válidos para la prueba
         character = Character(character_id=1, name="John Doe", year_of_birth="1985")
+
+        # Creamos la conexion a la base de datos para el test
+        session.connection()
 
         # Creamos un objeto List para la prueba
         list_obj = List(session)
