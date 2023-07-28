@@ -1,6 +1,7 @@
+from flask import request
 from flask_restful import Resource
 
-from character.application import List
+from character.application import List, Create
 
 
 class ApiResource(Resource):
@@ -16,7 +17,22 @@ class ApiResource(Resource):
             return str(errors), 400
 
     def post(self):
-        pass
+        args = request.get_json()
+        character_creation = Create()
+        character_creation.values.name = args.get('name')
+        character_creation.values.description = args.get('description', None)
+        character_creation.values.year_of_birth = args.get('year_of_birth', None)
+        character_creation.values.month_of_birth = args.get('month_of_birth', None)
+        character_creation.values.day_of_birth = args.get('day_of_birth', None)
+        character_creation.values.status = args.get('status')
+        character_creation.values.gender = args.get('gender', None)
+        character_creation.values.life_status = args.get('life_status')
+
+        result = character_creation.execute()
+        if result:
+            return '', 201
+        else:
+            return '', 401
 
     def put(self):
         pass

@@ -12,17 +12,17 @@ class TestCharacter:
 
     def test_validate_list(self):
         character = Character(name="John Doe", year_of_birth="1985")
-        assert character.validate()
+        assert character._validate_length()
 
         character.name = "J" * 256
-        assert not character.validate()
+        assert not character._validate_length()
 
         character.name = "John Doe"
         character.year_of_birth = 123456789012
-        assert not character.validate()
+        assert not character._validate_length()
 
         character.year_of_birth = "1985"
-        assert character.validate()
+        assert character._validate_length()
 
     def test_set_by_module_orm(self):
         character = Character()

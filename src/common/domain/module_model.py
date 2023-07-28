@@ -1,3 +1,6 @@
+import re
+
+
 class ModuleModel:
     _errors = []
 
@@ -26,5 +29,14 @@ class ModuleModel:
         return not has_error
 
     def validate(self):
-        has_error = self._validate_length()
-        return has_error
+        return self._validate_length()
+
+    def sanitize_for_mysql(self):
+        params = self.__dict__
+        for attr, value in params.items():
+            if isinstance(value, str):
+                params[attr] = self._sanitize_string(value)
+
+    def _sanitize_string(self, value):
+        sanitized_value = re.sub(r'[^\w\s\-]', '', value)
+        return sanitized_value
