@@ -41,15 +41,15 @@ class Character(ModuleModel):
 
     def validate_create(self):
         has_error = not super().validate()
-        if self.name is None:
+        if self.name is None and self.name is '':
             self.add_error(f'The \'name\' field cannot be None', ValueError)
             has_error = True
 
-        if self.status is None:
+        if self.status is None and self.status is '':
             self.add_error(f'The \'status\' field cannot be None', ValueError)
             has_error = True
 
-        if self.life_status is None:
+        if self.life_status is None and self.life_status is '':
             self.add_error(f'The \'life_status\' field cannot be None', ValueError)
             has_error = True
 
