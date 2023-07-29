@@ -21,7 +21,7 @@ class TestCharacterModel:
             gender = str(gender)
 
         character = Character(name=name, description=description, status=status, gender=gender, life_status=life_status)
-        character.set_errors()
+        character.delete_errors()
         result = character.validate_create()
 
         # Validating the result

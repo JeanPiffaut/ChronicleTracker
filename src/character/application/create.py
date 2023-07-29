@@ -19,7 +19,6 @@ class Create(Action):
             gender = str(gender)
 
         character = Character(name=name, description=description, status=status, gender=gender, life_status=life_status)
-
         character.sanitize_for_mysql()
         if character.validate_create() is False:
             errors = character.get_errors()

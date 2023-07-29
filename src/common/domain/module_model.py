@@ -12,6 +12,9 @@ class ModuleModel:
             errors = list()
         self._errors = errors
 
+    def delete_errors(self):
+        self._errors = []
+
     def get_errors(self):
         return self._errors
 

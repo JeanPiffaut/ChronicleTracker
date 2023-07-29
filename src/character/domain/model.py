@@ -12,12 +12,14 @@ class Character(ModuleModel):
 
     def __init__(self, character_id: int = None, name: str = None, description: str = None, status: str = None,
                  gender: str = None, life_status: int = None):
-        self.id = character_id
+        if type(character_id).__name__ == "int":
+            self.id = character_id
         self.name = name
         self.description = description
         self.status = status
         self.gender = gender
-        self.life_status = life_status
+        if type(life_status).__name__ == "int":
+            self.life_status = life_status
 
     def set_by_module_orm(self, obj: CharacterORM):
         if obj.id is not None:
