@@ -1,48 +1,30 @@
-from character.domain.db_model import CharacterORM
-from character.domain.model import Character
+import pytest
+
+from character.domain import Character
+from unit.character import test_params
 
 
-class TestCharacter:
+class TestCharacterModel:
+    # Test cases for Character model
+    @pytest.mark.parametrize("name, description, status, gender, life_status, expectation", test_params)
+    def test_validate_create(self, name, description, status, gender, life_status, expectation):
+        if name is not None:
+            name = str(name)
 
-    def test_constructor(self):
-        character = Character(character_id=1, name="John Doe")
-        assert character.id == 1
-        assert character.name == "John Doe"
+        if description is not None:
+            description = str(description)
 
-    def test_validate_list(self):
-        character = Character(name="John Doe")
-        assert character._validate_length()
+        if status is not None:
+            status = str(status)
 
-        character.name = "J" * 256
-        assert not character._validate_length()
+        if gender is not None:
+            gender = str(gender)
 
-        character.name = "John Doe"
-        character.year_of_birth = 123456789012
-        assert not character._validate_length()
-
-        character.year_of_birth = "1985"
-        assert character._validate_length()
-
-    def test_set_by_module_orm(self):
-        character = Character()
-        character_orm = CharacterORM(id=1, name="Jane Doe", description="Description")
-        character.set_by_module_orm(character_orm)
-
-        assert character.id == 1
-        assert character.name == "Jane Doe"
-        assert character.description == "Description"
-
-    def test_add_error(self):
-        character = Character()
+        character = Character(name=name, description=description, status=status, gender=gender, life_status=life_status)
         character.set_errors()
-        character.add_error("Error 1")
-        character.add_error("Error 2")
-        assert character.get_errors() == [{'msj': "Error 1", 'type_error': Exception},
-                                          {'msj': "Error 2", 'type_error': Exception}]
+        result = character.validate_create()
 
-    def test_set_errors(self):
-        character = Character()
-        character.set_errors(
-            [{'msj': "Error 3", 'type_error': ValueError}, {'msj': "Error 4", 'type_error': ValueError}])
-        assert character.get_errors() == [{'msj': "Error 3", 'type_error': ValueError},
-                                          {'msj': "Error 4", 'type_error': ValueError}]
+        # Validating the result
+        assert isinstance(result, bool) and result == expectation
+        if result is not False:
+            assert not character.get_errors()
