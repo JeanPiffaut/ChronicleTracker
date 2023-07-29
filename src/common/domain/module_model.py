@@ -3,21 +3,21 @@ import re
 
 class ModuleModel:
     def __init__(self):
-        self._errors = []
+        self.errors = list()
 
     def add_error(self, error_msj: str, type_error=Exception):
-        self._errors.append({'msj': error_msj, 'type_error': type_error})
+        self.errors.append({'msj': error_msj, 'type_error': type_error})
 
     def set_errors(self, errors=None):
         if errors is None:
             errors = list()
-        self._errors = errors
+        self.errors = errors
 
     def delete_errors(self):
-        self._errors = []
+        self.errors = list()
 
     def get_errors(self):
-        return self._errors
+        return self.errors
 
     def _validate_length(self):
         has_error = False
@@ -41,3 +41,12 @@ class ModuleModel:
         for attr, value in params.items():
             if isinstance(value, str):
                 params[attr] = re.sub(r'[^\w\s\-]', '', value.strip())
+
+    def to_dict(self):
+        return_params = dict()
+        params = self.__dict__
+        for param, value in params.items():
+            if param != 'errors':
+                return_params[param] = value
+
+        return return_params

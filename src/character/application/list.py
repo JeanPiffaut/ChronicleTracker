@@ -19,11 +19,27 @@ class List(Action):
         if fill_params.id is not None:
             query = query.where(CharacterORM.id == fill_params.id)
 
+        if fill_params.name is not None:
+            query = query.where(CharacterORM.name == fill_params.name)
+
+        if fill_params.description is not None:
+            query = query.where(CharacterORM.description == fill_params.description)
+
+        if fill_params.status is not None:
+            query = query.where(CharacterORM.status == fill_params.status)
+
+        if fill_params.gender is not None:
+            query = query.where(CharacterORM.gender == fill_params.gender)
+
+        if fill_params.life_status is not None:
+            query = query.where(CharacterORM.life_status == fill_params.life_status)
+
         result = self.session.execute(query)
+        
         user_list = []
         for user_obj in result.scalars():
             char = Character()
             char.set_by_module_orm(user_obj)
-            user_list.append(char.__dict__)
+            user_list.append(char.to_dict())
 
         return user_list

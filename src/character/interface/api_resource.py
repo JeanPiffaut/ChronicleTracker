@@ -3,11 +3,12 @@ from flask_restful import Resource
 
 from character.application import List, Create
 from common.misc import response_structure
+from database import session
 
 
 class ApiResource(Resource):
     def get(self, character_id):
-        character_list = List()
+        character_list = List(session)
         character_list.fill.id = character_id
 
         response = character_list.execute()
@@ -19,14 +20,16 @@ class ApiResource(Resource):
 
     def post(self):
         args = request.get_json()
-        character_creation = Create()
+        character_creation = Create(session)
         character_creation.values.name = args.get('name')
         character_creation.values.description = args.get('description', None)
         character_creation.values.status = args.get('status')
         character_creation.values.gender = args.get('gender', None)
         character_creation.values.life_status = args.get('life_status')
 
-        result = character_creation.execute()
+        result = character_creation.execute(name=args.get('name'), description=args.get('description', None),
+                                            status=args.get('status'), gender=args.get('gender', None),
+                                            life_status=args.get('life_status'))
         if result:
             return response_structure(201)
         else:

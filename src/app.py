@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 from character import character_bp
 from common.misc import ExtendedApi
 
+load_dotenv()
+
 app = Flask(__name__)
 
 if __name__ == '__main__':
