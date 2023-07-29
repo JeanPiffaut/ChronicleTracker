@@ -1,5 +1,11 @@
 # ChronicleTracker
 
+Welcome to the backend of our exciting platform! This project serves as the backbone for a unique and powerful tool that allows you to create intricate diagrams of character relationships and significant milestones within diverse stories you wish to document. By using this platform, you'll gain valuable insights into the characters' growth over time and understand the pivotal events that have shaped their current state.
+
+Our platform simplifies the complex task of visualizing and tracking character development, making it an ideal companion for exploring and comprehending the captivating worlds of the stories we cherish. Whether you're an avid reader, writer, or simply intrigued by the art of storytelling, our platform promises to enrich your understanding of beloved narratives.
+
+Join us on this journey of discovery and creation, as we unlock the secrets of characters and their compelling journeys through the enchanting realm of storytelling. Let's delve deeper into the magic of stories together!
+
 ## Setting up Project Environment Variables
 
 To configure the necessary environment variables for the project, follow these steps:
