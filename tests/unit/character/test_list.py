@@ -9,8 +9,8 @@ from unit.database import session
 
 class TestListAction:
     # Test cases for List action class
-    @pytest.mark.parametrize("name, description, status, gender, life_status, expectation", test_params)
-    def test_list_characters(self, name, description, status, gender, life_status, expectation):
+    @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
+    def test_list_characters(self, character_id, name, description, status, gender, life_status, expectation):
         character_orm = CharacterORM(name=name, description=description, status=status, gender=gender,
                                      life_status=life_status)
         # Creating and setting the parameters

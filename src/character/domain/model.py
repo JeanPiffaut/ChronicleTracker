@@ -3,23 +3,23 @@ from common.domain.module_model import ModuleModel
 
 
 class Character(ModuleModel):
-    id = None
-    name = None
-    description = None
-    status = None
-    gender = None
-    life_status = None
-
     def __init__(self, character_id: int = None, name: str = None, description: str = None, status: str = None,
                  gender: str = None, life_status: int = None):
+        super().__init__()
         if type(character_id).__name__ == "int":
             self.id = character_id
+        else:
+            self.id = None
         self.name = name
         self.description = description
         self.status = status
         self.gender = gender
         if type(life_status).__name__ == "int":
             self.life_status = life_status
+        else:
+            self.life_status = None
+
+
 
     def set_by_module_orm(self, obj: CharacterORM):
         if obj.id is not None:

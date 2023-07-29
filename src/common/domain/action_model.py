@@ -2,9 +2,6 @@ from database import session as default_session
 
 
 class Action:
-    session = None
-    _errors = dict()
-
     def __init__(self, session=None):
         self._errors = dict()
         if session is not None:

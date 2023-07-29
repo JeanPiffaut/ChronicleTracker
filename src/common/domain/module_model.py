@@ -2,7 +2,8 @@ import re
 
 
 class ModuleModel:
-    _errors = list()
+    def __init__(self):
+        self._errors = []
 
     def add_error(self, error_msj: str, type_error=Exception):
         self._errors.append({'msj': error_msj, 'type_error': type_error})

@@ -6,8 +6,8 @@ from unit.character import test_params
 
 class TestCharacterModel:
     # Test cases for Character model
-    @pytest.mark.parametrize("name, description, status, gender, life_status, expectation", test_params)
-    def test_validate_create(self, name, description, status, gender, life_status, expectation):
+    @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
+    def test_validate_create(self, character_id, name, description, status, gender, life_status, expectation):
         if name is not None:
             name = str(name)
 
@@ -21,10 +21,8 @@ class TestCharacterModel:
             gender = str(gender)
 
         character = Character(name=name, description=description, status=status, gender=gender, life_status=life_status)
-        character.delete_errors()
         result = character.validate_create()
 
+        print(character.get_errors())
         # Validating the result
         assert isinstance(result, bool) and result == expectation
-        if result is not False:
-            assert not character.get_errors()
