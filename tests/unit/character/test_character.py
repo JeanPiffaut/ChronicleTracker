@@ -6,7 +6,7 @@ from unit.character import test_params
 from unit.database import session
 
 
-class TestCharacter:
+class TestCharacterApplication:
     @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
     def test_validate_create(self, character_id, name, description, status, gender, life_status, expectation):
         if name is not None:

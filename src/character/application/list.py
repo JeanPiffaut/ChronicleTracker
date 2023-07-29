@@ -5,7 +5,9 @@ from common.domain import Action
 
 
 class List(Action):
-    fill = Character()
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.fill = Character()
 
     def execute(self):
         self.fill.sanitize_for_mysql()
@@ -35,7 +37,7 @@ class List(Action):
             query = query.where(CharacterORM.life_status == fill_params.life_status)
 
         result = self.session.execute(query)
-        
+
         user_list = []
         for user_obj in result.scalars():
             char = Character()

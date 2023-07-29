@@ -6,5 +6,4 @@ from character.interface import ApiResource
 character_bp = Blueprint('character', __name__)
 api = Api(character_bp)
 
-api.add_resource(ApiResource, '/character', endpoint='character_resource', methods=['POST'])
-api.add_resource(ApiResource, '/character/<int:character_id>', endpoint='character_get', methods=['GET'])
+api.add_resource(ApiResource, '/character', endpoint='character_resource', methods=['POST', 'GET'])

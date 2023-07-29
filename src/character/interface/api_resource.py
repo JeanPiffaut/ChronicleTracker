@@ -7,9 +7,15 @@ from database import session
 
 
 class ApiResource(Resource):
-    def get(self, character_id):
+    def get(self):
         character_list = List(session)
-        character_list.fill.id = character_id
+        args = request.get_json()
+        character_list.fill.id = args.get('id', None)
+        character_list.fill.name = args.get('name', None)
+        character_list.fill.description = args.get('description', None)
+        character_list.fill.status = args.get('status', None)
+        character_list.fill.gender = args.get('gender', None)
+        character_list.fill.life_status = args.get('life_status', None)
 
         response = character_list.execute()
         if response is not False:
@@ -21,12 +27,6 @@ class ApiResource(Resource):
     def post(self):
         args = request.get_json()
         character_creation = Create(session)
-        character_creation.values.name = args.get('name')
-        character_creation.values.description = args.get('description', None)
-        character_creation.values.status = args.get('status')
-        character_creation.values.gender = args.get('gender', None)
-        character_creation.values.life_status = args.get('life_status')
-
         result = character_creation.execute(name=args.get('name'), description=args.get('description', None),
                                             status=args.get('status'), gender=args.get('gender', None),
                                             life_status=args.get('life_status'))
