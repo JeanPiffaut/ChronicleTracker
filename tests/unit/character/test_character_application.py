@@ -1,4 +1,5 @@
 import pytest
+from sqlalchemy import delete
 
 from character.application import Create, List
 from character.domain import Character, CharacterORM
@@ -50,6 +51,12 @@ class TestCharacterApplication:
 
         # Executing the action
         result = list_action.execute()
-        print(result)
+        print(list_action.get_errors())
+
         # Validating the result
         assert (len(result) >= 1) == expectation
+
+    def test_clean_bd(self):
+        query = delete(CharacterORM)
+        session.execute(query)
+        session.commit()

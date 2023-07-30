@@ -24,7 +24,6 @@ class Create(Action):
             self.set_errors(errors)
             return False
 
-        character.sanitize_for_mysql()
         query = insert(CharacterORM).values(id=character.id, name=character.name, description=character.description,
                                             status=character.status, gender=character.gender,
                                             life_status=character.life_status)

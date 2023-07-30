@@ -1,16 +1,18 @@
 from flask import request, jsonify
 from flask_restful import Resource
 
-from character.application import List, Create
+from character.application import List, Create, Update
 from common.misc import response_structure
 from database import session
 
 
 class ApiResource(Resource):
-    def get(self):
+    def get(self, character_id=None):
         character_list = List(session)
         args = request.get_json()
-        character_list.fill.id = args.get('id', None)
+        if character_id is not None:
+            character_list.fill.id = character_id
+
         character_list.fill.name = args.get('name', None)
         character_list.fill.description = args.get('description', None)
         character_list.fill.status = args.get('status', None)
@@ -37,8 +39,22 @@ class ApiResource(Resource):
                                                                             "review the error messages provided in the"
                                                                             " response and validate the data sent.")
 
-    def put(self):
+    def put(self, character_id):
+        return self._update_character(True, character_id)
+
+    def patch(self, character_id):
+        return self._update_character(False, character_id)
+
+    def delete(self, character_id):
         pass
 
-    def delete(self):
-        pass
+    def _update_character(self, strict, character_id):
+        args = request.get_json()
+        update_character = Update(session, strict)
+        result = update_character.execute(character_id, str(args.get('name')), str(args.get('description')),
+                                          str(args.get('status')), str(args.get('gender')),
+                                          str(args.get('life_status')))
+        if result:
+            return response_structure(200)
+        else:
+            return response_structure(400, update_character.get_errors())
