@@ -3,19 +3,16 @@ from flask_restful import Api
 from sqlalchemy.orm import sessionmaker
 
 
-def response_structure(code_status: int, response=None, message=None):
-    if code_status == 200 or code_status == 201:
+def response_structure(code_status: int, response='', message=''):
+    if 200 <= code_status < 300:
         status = 'Success'
     else:
         status = 'Error'
 
     args = dict()
     args['status'] = status
-    if message is not None:
-        args['message'] = message
-
-    if response is not None:
-        args['response'] = response
+    args['message'] = message
+    args['response'] = response
 
     return args, code_status
 

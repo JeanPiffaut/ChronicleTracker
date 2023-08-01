@@ -9,15 +9,16 @@ from database import session
 class ApiResource(Resource):
     def get(self, character_id=None):
         character_list = List(session)
-        args = request.get_json()
         if character_id is not None:
             character_list.fill.id = character_id
 
-        character_list.fill.name = args.get('name', None)
-        character_list.fill.description = args.get('description', None)
-        character_list.fill.status = args.get('status', None)
-        character_list.fill.gender = args.get('gender', None)
-        character_list.fill.life_status = args.get('life_status', None)
+        if request.is_json is not None:
+            args = request.get_json()
+            character_list.fill.name = args.get('name', None)
+            character_list.fill.description = args.get('description', None)
+            character_list.fill.status = args.get('status', None)
+            character_list.fill.gender = args.get('gender', None)
+            character_list.fill.life_status = args.get('life_status', None)
 
         response = character_list.execute()
         if response is not False:
