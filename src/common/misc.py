@@ -3,7 +3,7 @@ from flask_restful import Api
 from sqlalchemy.orm import sessionmaker
 
 
-def response_structure(code_status: int, response='', message=''):
+def response_structure(code_status: int, response=None, message=None):
     if 200 <= code_status < 300:
         status = 'Success'
     else:
@@ -11,8 +11,12 @@ def response_structure(code_status: int, response='', message=''):
 
     args = dict()
     args['status'] = status
-    args['message'] = message
-    args['response'] = response
+
+    if message is not None:
+        args['message'] = message
+
+    if response is not None:
+        args['response'] = response
 
     return args, code_status
 

@@ -21,11 +21,17 @@ class ApiResource(Resource):
             character_list.fill.life_status = args.get('life_status', None)
 
         response = character_list.execute()
-        if response is not False:
-            return response_structure(200, response)
+        if type(response) is list and len(response) > 0:
+            if character_id is not None:
+                character = response[0]
+                return response_structure(200, character)
+            else:
+                return response_structure(200, response)
+
+        elif type(response) is list and len(response) is 0:
+            return response_structure(404, message='Character not found.')
         else:
-            errors = character_list.get_errors()
-            return response_structure(400, errors)
+            return response_structure(400, character_list.get_errors(), 'Bad request')
 
     def post(self):
         args = request.get_json()
@@ -34,11 +40,9 @@ class ApiResource(Resource):
                                             status=args.get('status'), gender=args.get('gender', None),
                                             life_status=args.get('life_status'))
         if result:
-            return response_structure(201)
+            return response_structure(201, message='Character created successfully')
         else:
-            return response_structure(400, character_creation.get_errors(), "Failed to create a new character. Please "
-                                                                            "review the error messages provided in the"
-                                                                            " response and validate the data sent.")
+            return response_structure(400, character_creation.get_errors(), "Bad request")
 
     def put(self, character_id):
         return self._update_character(True, character_id)
@@ -56,6 +60,6 @@ class ApiResource(Resource):
                                           str(args.get('status')), str(args.get('gender')),
                                           str(args.get('life_status')))
         if result:
-            return response_structure(200)
+            return response_structure(200, message='Character updated successfully')
         else:
-            return response_structure(400, update_character.get_errors())
+            return response_structure(400, update_character.get_errors(), 'Bad request')
