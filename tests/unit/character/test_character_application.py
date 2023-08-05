@@ -35,6 +35,22 @@ class TestCharacterApplication:
         create_action = Create(session)
 
         # Executing the action
+        result = create_action.execute(name=name, description=description, status=status, gender=gender,
+                                       life_status=life_status)
+
+        # Validating the result
+        print(create_action.get_errors())
+        assert isinstance(result, bool) and result == expectation
+        query = delete(CharacterORM)
+        session.execute(query)
+        session.commit()
+
+    @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
+    def test_create_character_with_id(self, character_id, name, description, status, gender, life_status, expectation):
+        # Mocking the session object
+        create_action = Create(session)
+
+        # Executing the action
         result = create_action.execute(character_id, name, description, status, gender, life_status)
 
         # Validating the result
