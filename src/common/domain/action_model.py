@@ -4,7 +4,7 @@ class Action:
         self.session = session
 
     def add_error(self, error_msj: str, type_error=Exception):
-        self.errors.append({'msj': error_msj, 'type_error': type_error})
+        self.errors.append({'msj': error_msj, 'type_error': str(type_error)})
 
     def set_errors(self, errors=list()):
         self.errors = errors

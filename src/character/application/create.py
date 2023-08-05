@@ -1,9 +1,16 @@
+from select import select
+
+from character.application import List
 from character.domain import Character, CharacterORM
 from common.domain import Action
 from sqlalchemy import insert
 
 
 class Create(Action):
+
+    def __init__(self, session=None):
+        super().__init__(session)
+        self.character_created = None
 
     def execute(self, character_id=None, name=None, description=None, status=None, gender=None, life_status=None):
         if name is not None:
@@ -30,9 +37,14 @@ class Create(Action):
         try:
             result = self.session.execute(query)
             self.session.commit()
-            return bool(result.rowcount)
+            character_list = List(self.session)
+            character_list.fill.id = result.lastrowid
+            character_data = character_list.execute()
+            self.character_created = character_data[0]
+            return True
         except Exception as err:
-            self.add_error(str(err))
+            print(1)
+            self.add_error(err.__str__())
             return False
 
 

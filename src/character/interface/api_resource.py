@@ -40,7 +40,7 @@ class ApiResource(Resource):
                                             status=args.get('status'), gender=args.get('gender', None),
                                             life_status=args.get('life_status'))
         if result:
-            return response_structure(201, message='Character created successfully')
+            return response_structure(201, character_creation.character_created, 'Character created successfully')
         else:
             return response_structure(400, character_creation.get_errors(), "Bad request")
 

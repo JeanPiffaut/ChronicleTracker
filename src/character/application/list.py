@@ -10,7 +10,6 @@ class List(Action):
         self.fill = Character()
 
     def execute(self):
-        self.fill.sanitize_for_mysql()
         fill_params = self.fill
         if fill_params.validate() is False:
             errors = fill_params.get_errors()
