@@ -11,8 +11,7 @@ class ApiResource(Resource):
         character_list = List(session)
         if character_id is not None:
             character_list.fill.id = character_id
-
-        if request.is_json is not None:
+        elif request.is_json is not None:
             args = request.get_json()
             character_list.fill.name = args.get('name', None)
             character_list.fill.description = args.get('description', None)
@@ -60,6 +59,6 @@ class ApiResource(Resource):
                                           str(args.get('status')), str(args.get('gender')),
                                           str(args.get('life_status')))
         if result:
-            return response_structure(200, message='Character updated successfully')
+            return response_structure(200, update_character.character_updated,'Character updated successfully')
         else:
             return response_structure(400, update_character.get_errors(), 'Bad request')
