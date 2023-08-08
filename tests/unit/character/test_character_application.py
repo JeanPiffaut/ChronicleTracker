@@ -108,6 +108,56 @@ class TestCharacterApplication:
             assert updated_character['life_status'] == life_status
 
     @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
+    def test_update_character_strict(self, character_id, name, description, status, gender, life_status, expectation):
+        # Mocking the session object
+        update_action = Update(session, strict_value=True)  # You can set strict_value to True if needed
+        if type(name) is str:
+            name += 'a'
+        elif type(name) is int:
+            name = str(name + 1)
+
+        if type(description) is str:
+            description += 'a'
+        elif type(description) is int:
+            description = str(description + 1)
+
+        if type(status) is str:
+            status += 'a'
+        elif type(status) is int:
+            status = str(status + 1)
+
+        if type(gender) is str:
+            gender += 'a'
+        elif type(gender) is int:
+            gender = str(gender + 1)
+
+        if type(life_status) is str:
+            life_status += 'a'
+        elif type(life_status) is int:
+            life_status += 1
+
+        # Executing the action
+        result = update_action.execute(character_id, name, description, status, gender, life_status)
+
+        # Validating the result
+        print(update_action.get_errors())
+        assert isinstance(result, bool) and result == expectation
+        if expectation is not False:
+            # Retrieve the updated character data from the database
+            character_list = List(update_action.session)
+            character_list.fill.id = character_id
+            character_data = character_list.execute()
+            updated_character = character_data[0]
+
+            # Assert that the updated character's attributes match the expected values
+            assert updated_character['id'] == character_id
+            assert updated_character['name'] == name
+            assert updated_character['description'] == description
+            assert updated_character['status'] == status
+            assert updated_character['gender'] == gender
+            assert updated_character['life_status'] == life_status
+
+    @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
     def test_list_characters_by_id(self, character_id, name, description, status, gender, life_status, expectation):
         character_orm = CharacterORM(id=character_id, name=name, description=description, status=status, gender=gender,
                                      life_status=life_status)
