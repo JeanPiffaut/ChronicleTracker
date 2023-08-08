@@ -10,7 +10,6 @@ class List(Action):
         self.fill = Character()
 
     def execute(self):
-        self.fill.sanitize_for_mysql()
         fill_params = self.fill
         if fill_params.validate() is False:
             errors = fill_params.get_errors()
@@ -38,7 +37,7 @@ class List(Action):
 
         result = self.session.execute(query)
 
-        user_list = []
+        user_list = list()
         for user_obj in result.scalars():
             char = Character()
             char.set_by_module_orm(user_obj)
