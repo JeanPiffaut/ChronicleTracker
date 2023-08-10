@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import delete
 
-from character.application import Create, List, Update
+from character.application import Create, List, Update, Delete
 from character.domain import Character, CharacterORM
 from unit.character import test_params
 from unit.database import session
@@ -176,3 +176,30 @@ class TestCharacterApplication:
         query = delete(CharacterORM)
         session.execute(query)
         session.commit()
+
+    @pytest.mark.parametrize("character_id, name, description, status, gender, life_status, expectation", test_params)
+    def test_delete_character(self, character_id, name, description, status, gender, life_status, expectation):
+        query = delete(CharacterORM)
+        session.execute(query)
+        session.commit()
+
+        # Create a character to be deleted (this part is similar to your creation test)
+        create_action = Create(session)
+        create_result = create_action.execute(name=name, description=description, status=status, gender=gender,
+                                              life_status=life_status)
+        assert isinstance(create_result, bool) and create_result == expectation
+        if create_result is not False:
+            # Executing the action (deleting the character)
+            delete_action = Delete(session)
+            delete_result = delete_action.execute(create_action.character_created['id'])
+
+            # Validating the result
+            assert isinstance(delete_result, int) and delete_result >= 0
+            if expectation:
+                assert delete_result == 1
+            else:
+                assert delete_result == 0
+
+        # Clean up: Rollback and close the session
+        session.rollback()
+        session.close()
