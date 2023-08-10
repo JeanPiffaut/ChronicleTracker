@@ -1,25 +1,25 @@
 from flask import request, jsonify
 from flask_restful import Resource
 
-from character.application import List, Create, Update
+from character.application import List, Create, Update, Delete
 from common.misc import response_structure
 from database import session
 
 
 class ApiResource(Resource):
     def get(self, character_id=None):
-        character_list = List(session)
+        list_obj = List(session)
         if character_id is not None:
-            character_list.fill.id = character_id
+            list_obj.fill.id = character_id
         elif request.is_json is not None:
             args = request.get_json()
-            character_list.fill.name = args.get('name', None)
-            character_list.fill.description = args.get('description', None)
-            character_list.fill.status = args.get('status', None)
-            character_list.fill.gender = args.get('gender', None)
-            character_list.fill.life_status = args.get('life_status', None)
+            list_obj.fill.name = args.get('name', None)
+            list_obj.fill.description = args.get('description', None)
+            list_obj.fill.status = args.get('status', None)
+            list_obj.fill.gender = args.get('gender', None)
+            list_obj.fill.life_status = args.get('life_status', None)
 
-        response = character_list.execute()
+        response = list_obj.execute()
         if type(response) is list and len(response) > 0:
             if character_id is not None:
                 character = response[0]
@@ -30,18 +30,18 @@ class ApiResource(Resource):
         elif type(response) is list and len(response) is 0:
             return response_structure(404, message='Character not found.')
         else:
-            return response_structure(400, character_list.get_errors(), 'Bad request')
+            return response_structure(400, list_obj.get_errors(), 'Bad request')
 
     def post(self):
         args = request.get_json()
-        character_creation = Create(session)
-        result = character_creation.execute(name=args.get('name'), description=args.get('description', None),
-                                            status=args.get('status'), gender=args.get('gender', None),
-                                            life_status=args.get('life_status'))
+        creation_obj = Create(session)
+        result = creation_obj.execute(name=args.get('name'), description=args.get('description', None),
+                                      status=args.get('status'), gender=args.get('gender', None),
+                                      life_status=args.get('life_status'))
         if result:
-            return response_structure(201, character_creation.character_created, 'Character created successfully')
+            return response_structure(201, creation_obj.character_created, 'Character created successfully')
         else:
-            return response_structure(400, character_creation.get_errors(), "Bad request")
+            return response_structure(400, creation_obj.get_errors(), "Bad request")
 
     def put(self, character_id):
         return self._update_character(True, character_id)
@@ -50,15 +50,22 @@ class ApiResource(Resource):
         return self._update_character(False, character_id)
 
     def delete(self, character_id):
-        pass
+        delete_obj = Delete(session)
+        result = delete_obj.execute(character_id)
+        if type(result) is int and result == 1:
+            return response_structure(204, message='Character deleted successfully')
+        elif type(result) is int and result == 0:
+            return response_structure(404, message='Character not found')
+        else:
+            return response_structure(400, delete_obj.get_errors(), 'Bad request')
 
     def _update_character(self, strict, character_id):
         args = request.get_json()
-        update_character = Update(session, strict)
-        result = update_character.execute(character_id, str(args.get('name')), str(args.get('description')),
-                                          str(args.get('status')), str(args.get('gender')),
-                                          str(args.get('life_status')))
+        update_obj = Update(session, strict)
+        result = update_obj.execute(character_id, str(args.get('name')), str(args.get('description')),
+                                    str(args.get('status')), str(args.get('gender')),
+                                    str(args.get('life_status')))
         if result:
-            return response_structure(200, update_character.character_updated,'Character updated successfully')
+            return response_structure(200, update_obj.character_updated, 'Character updated successfully')
         else:
-            return response_structure(400, update_character.get_errors(), 'Bad request')
+            return response_structure(400, update_obj.get_errors(), 'Bad request')

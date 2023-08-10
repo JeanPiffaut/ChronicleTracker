@@ -3,10 +3,12 @@ class Action:
         self.errors = list()
         self.session = session
 
-    def add_error(self, error_msj: str, type_error=Exception):
-        self.errors.append({'msj': error_msj, 'type_error': str(type_error)})
+    def add_error(self, error_msj: str):
+        self.errors.append(error_msj)
 
-    def set_errors(self, errors=list()):
+    def set_errors(self, errors=None):
+        if errors is None:
+            errors = list()
         self.errors = errors
 
     def delete_errors(self):
