@@ -1,11 +1,11 @@
-from flask_restful.fields import DateTime
+from datetime import datetime
 
 from common.domain import ModuleModel
 from milestone.domain import MilestoneORM
 
 
 class Milestone(ModuleModel):
-    def __init__(self, milestone_id: int = None, description: str = None, date: DateTime = None):
+    def __init__(self, milestone_id: int = None, description: str = None, date: datetime = None):
         super().__init__()
         self.id = milestone_id
         self.description = description
