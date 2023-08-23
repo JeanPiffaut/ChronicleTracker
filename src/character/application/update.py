@@ -16,7 +16,7 @@ class Update(Action):
         if self.strict_value:
             if name == 'None':
                 name = None
-                
+
             if description == 'None':
                 description = None
 
@@ -34,8 +34,10 @@ class Update(Action):
                 errors = character.get_errors()
                 self.set_errors(errors)
                 return False
-            query = update(CharacterORM).values(name=character.name, description=character.description, status=character.status, gender=character.gender,
-                                                life_status=character.life_status).where(CharacterORM.id == character_id)
+            query = update(CharacterORM).values(name=character.name, description=character.description,
+                                                status=character.status, gender=character.gender,
+                                                life_status=character.life_status).where(
+                CharacterORM.id == character_id)
         else:
             character = Character(character_id=character_id, name=name, description=description, status=status,
                                   gender=gender, life_status=life_status)
@@ -43,6 +45,7 @@ class Update(Action):
                 errors = character.get_errors()
                 self.set_errors(errors)
                 return False
+
             query = update(CharacterORM).where(CharacterORM.id == character_id)
             if character.name is not None and character.name != 'None':
                 query = query.values(name=character.name)
