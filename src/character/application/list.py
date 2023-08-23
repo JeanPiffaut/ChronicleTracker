@@ -37,10 +37,10 @@ class List(Action):
 
         result = self.session.execute(query)
 
-        user_list = list()
-        for user_obj in result.scalars():
+        character_list = list()
+        for character_obj in result.scalars():
             char = Character()
-            char.set_by_module_orm(user_obj)
-            user_list.append(char.to_dict())
+            char.set_by_module_orm(character_obj)
+            character_list.append(char.to_dict())
 
-        return user_list
+        return character_list
