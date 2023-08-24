@@ -1,10 +1,8 @@
-from datetime import datetime
-
-from sqlalchemy import insert
-
-from common.domain import Action
 from milestone.application import List
 from milestone.domain import Milestone, MilestoneORM
+from common.domain import Action
+from sqlalchemy import insert
+from datetime import datetime
 
 
 class Create(Action):
@@ -19,7 +17,7 @@ class Create(Action):
         if description is not None:
             description = str(description)
 
-        if date is not None:
+        if date is not None and type(date) is str:
             date = datetime.fromisoformat(date)
 
         milestone = Milestone(milestone_id=milestone_id, description=description, date=date)

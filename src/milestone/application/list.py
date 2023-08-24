@@ -1,5 +1,4 @@
 from sqlalchemy import select
-
 from common.domain import Action
 from milestone.domain import Milestone, MilestoneORM
 

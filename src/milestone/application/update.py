@@ -13,9 +13,6 @@ class Update(Action):
 
     def execute(self, milestone_id=None, description=None, date=None):
         if self.strict_value:
-            if milestone_id == 'None':
-                milestone_id = None
-
             if description == 'None':
                 description = None
 
@@ -44,7 +41,6 @@ class Update(Action):
                 query = query.values(description=milestone.description)
             if milestone.date is not None and milestone.date != 'None':
                 query = query.values(date=milestone.date)
-
         try:
             result = self.session.execute(query)
             self.session.commit()
