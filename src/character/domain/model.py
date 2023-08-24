@@ -19,8 +19,6 @@ class Character(ModuleModel):
         else:
             self.life_status = None
 
-
-
     def set_by_module_orm(self, obj: CharacterORM):
         if obj.id is not None:
             self.id = obj.id

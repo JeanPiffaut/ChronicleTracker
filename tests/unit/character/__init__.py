@@ -48,7 +48,8 @@ test_params = [
     (43, "Michael", "A name with @#$%^&*()_+{}[]:;<>,.?/" * 10, "inactive", "male", 1, False),
     (44, "Aria", "A name with --SQL Injection", "unknown", "other", -1, True),
     (
-    45, "Ethan", "A name with XSS Attack: <script>attack</script>", "active", "@#$%^&*()_+{}[]:;<>,.?/" * 10, -1, True),
+        45, "Ethan", "A name with XSS Attack: <script>attack</script>", "active", "@#$%^&*()_+{}[]:;<>,.?/" * 10, -1,
+        True),
     (46, "Ariana", "Special Characters", "@#$%^&*()_+{}[]:;<>,.?/", "@#$%^&*()_+{}[]:;<>,.?/", 1, True),
     (47, "Matthew", "Special Characters", "@#$%^&*()_+{}[]:;<>,.?/" * 10, "@#$%^&*()_+{}[]:;<>,.?/" * 10, 0, True),
     (48, "Camila", "LongName" * 10, "active", "@#$%^&*()_+{}[]:;<>,.?/" * 10, -1, True),

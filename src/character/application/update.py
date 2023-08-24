@@ -1,7 +1,7 @@
 from sqlalchemy import update
 
 from character.application import List
-from character.domain import CharacterORM
+from character.domain import CharacterORM, Character
 from common.domain import Action
 
 
@@ -16,7 +16,7 @@ class Update(Action):
         if self.strict_value:
             if name == 'None':
                 name = None
-                
+
             if description == 'None':
                 description = None
 
@@ -28,20 +28,35 @@ class Update(Action):
 
             if life_status == 'None':
                 life_status = None
-            query = update(CharacterORM).values(name=name, description=description, status=status, gender=gender,
-                                                life_status=life_status).where(CharacterORM.id == character_id)
+            character = Character(character_id=character_id, name=name, description=description, status=status,
+                                  gender=gender, life_status=life_status)
+            if character.validate_create() is False:
+                errors = character.get_errors()
+                self.set_errors(errors)
+                return False
+            query = update(CharacterORM).values(name=character.name, description=character.description,
+                                                status=character.status, gender=character.gender,
+                                                life_status=character.life_status).where(
+                CharacterORM.id == character_id)
         else:
+            character = Character(character_id=character_id, name=name, description=description, status=status,
+                                  gender=gender, life_status=life_status)
+            if character.validate_create() is False:
+                errors = character.get_errors()
+                self.set_errors(errors)
+                return False
+
             query = update(CharacterORM).where(CharacterORM.id == character_id)
-            if name is not None and name != 'None':
-                query = query.values(name=name)
-            if description is not None and description != 'None':
-                query = query.values(description=description)
-            if status is not None and status != 'None':
-                query = query.values(status=status)
-            if gender is not None and gender != 'None':
-                query = query.values(gender=gender)
-            if life_status is not None and life_status != 'None':
-                query = query.values(life_status=life_status)
+            if character.name is not None and character.name != 'None':
+                query = query.values(name=character.name)
+            if character.description is not None and character.description != 'None':
+                query = query.values(description=character.description)
+            if character.status is not None and character.status != 'None':
+                query = query.values(status=character.status)
+            if character.gender is not None and character.gender != 'None':
+                query = query.values(gender=character.gender)
+            if character.life_status is not None and character.life_status != 'None':
+                query = query.values(life_status=character.life_status)
 
         try:
             result = self.session.execute(query)

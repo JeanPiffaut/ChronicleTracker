@@ -1,5 +1,3 @@
-from select import select
-
 from character.application import List
 from character.domain import Character, CharacterORM
 from common.domain import Action
@@ -43,7 +41,6 @@ class Create(Action):
             self.character_created = character_data[0]
             return True
         except Exception as err:
-            print(1)
             self.add_error(err.__str__())
             return False
 

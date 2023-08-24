@@ -36,12 +36,6 @@ class ModuleModel:
         result = self._validate_length()
         return result
 
-    def sanitize_for_mysql(self):
-        params = self.__dict__
-        for attr, value in params.items():
-            if isinstance(value, str):
-                params[attr] = re.sub(r'[^\w\s\-]', '', value.strip())
-
     def to_dict(self):
         return_params = dict()
         params = self.__dict__
