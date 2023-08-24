@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import pytest
 from sqlalchemy import delete
 
-from milestone.application import Create, Update, List
+from milestone.application import Create, Update, List, Delete
 from milestone.domain import Milestone, MilestoneORM
 from unit.database import session
 from unit.milestone import test_params
@@ -88,3 +88,32 @@ class TestMilestoneApplication:
                     "%Y-%m-%d")
             elif date is not None and type(date) is datetime:
                 assert updated_milestone['date'].strftime("%Y-%m-%d") == date.strftime("%Y-%m-%d")
+
+    import pytest
+
+    @pytest.mark.parametrize("milestone_id, description, date, expectation", test_params)
+    def test_delete_milestone(self, milestone_id, description, date, expectation):
+        # Eliminar todos los elementos existentes antes de comenzar la prueba
+        delete_all_query = delete(MilestoneORM)
+        session.execute(delete_all_query)
+        session.commit()
+
+        # Crear un hito para ser eliminado (esta parte es similar a tu prueba de creación)
+        create_action = Create(session)
+        create_result = create_action.execute(description=description, date=date)
+        assert isinstance(create_result, bool) and create_result == expectation
+        if create_result is not False:
+            # Ejecutar la acción (eliminar el hito)
+            delete_action = Delete(session)
+            delete_result = delete_action.execute(create_action.milestone_created['id'])
+
+            # Validar el resultado
+            assert isinstance(delete_result, int) and delete_result >= 0
+            if expectation:
+                assert delete_result == 1
+            else:
+                assert delete_result == 0
+
+        # Limpiar: deshacer y cerrar la sesión
+        session.rollback()
+        session.close()
